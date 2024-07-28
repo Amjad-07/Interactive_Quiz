@@ -1,0 +1,110 @@
+const quizData = [
+    {
+        question: "What is the capital of France?",
+        a: "Berlin",
+        b: "Madrid",
+        c: "Paris",
+        d: "Lisbon",
+        correct: "c"
+    },
+    {
+        question: "Who is the CEO of Tesla?",
+        a: "Jeff Bezos",
+        b: "Elon Musk",
+        c: "Bill Gates",
+        d: "Tony Stark",
+        correct: "b"
+    },
+    {
+        question: "What is the most used programming language in 2023?",
+        a: "Java",
+        b: "C",
+        c: "Python",
+        d: "JavaScript",
+        correct: "d"
+    },
+    {
+        question: "What does HTML stand for?",
+        a: "Hypertext Markup Language",
+        b: "Hypertext Markdown Language",
+        c: "Hyperloop Machine Language",
+        d: "Helicopters Terminals Motorboats Lamborghinis",
+        correct: "a"
+    },
+    {
+        question: "What year was JavaScript launched?",
+        a: "1996",
+        b: "1995",
+        c: "1994",
+        d: "none of the above",
+        correct: "b"
+    }
+];
+
+const quiz = document.getElementById('quiz');
+const submitBtn = document.getElementById('submit');
+const resultEl = document.getElementById('result');
+let currentQuiz = 0;
+let score = 0;
+
+loadQuiz();
+
+function loadQuiz() {
+    const currentQuizData = quizData[currentQuiz];
+    
+    quiz.innerHTML = `
+        <div class="question">${currentQuizData.question}</div>
+        <ul class="options">
+            <li>
+                <input type="radio" name="answer" id="a" value="a">
+                <label for="a">${currentQuizData.a}</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="b" value="b">
+                <label for="b">${currentQuizData.b}</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="c" value="c">
+                <label for="c">${currentQuizData.c}</label>
+            </li>
+            <li>
+                <input type="radio" name="answer" id="d" value="d">
+                <label for="d">${currentQuizData.d}</label>
+            </li>
+        </ul>
+    `;
+}
+
+function getSelected() {
+    const answers = document.querySelectorAll('input[name="answer"]');
+    let answer;
+    answers.forEach((ans) => {
+        if (ans.checked) {
+            answer = ans.value;
+
+        }
+    });
+    return answer;
+}
+
+submitBtn.addEventListener('click', () => {
+    const answer = getSelected();
+    console.log(answer);
+
+    
+    if (answer) {
+        if (answer === quizData[currentQuiz].correct) {
+            score++;
+        }
+        currentQuiz++;
+        
+        if (currentQuiz < quizData.length) {
+            loadQuiz();
+        }
+         else {
+            quiz.innerHTML = '';
+            submitBtn.style.display = 'none';
+            resultEl.innerHTML = `<h2>You answered correctly at ${score}/${quizData.length} questions.</h2>`;
+        }
+    }
+});
